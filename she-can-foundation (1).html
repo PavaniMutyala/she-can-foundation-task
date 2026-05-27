@@ -1,0 +1,790 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>She Can Foundation — Get In Touch</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Outfit:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+:root {
+  --rose: #c2185b;
+  --rose-light: #f48fb1;
+  --rose-pale: #fce4ec;
+  --rose-dark: #880e4f;
+  --plum: #4a148c;
+  --gold: #f9a825;
+  --cream: #fffaf6;
+  --white: #ffffff;
+  --text: #1c1017;
+  --text-muted: #7a6070;
+  --border: #f0e4ec;
+  --success: #2e7d32;
+  --success-bg: #e8f5e9;
+  --error: #c62828;
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+body {
+  font-family: 'Outfit', sans-serif;
+  background: var(--cream);
+  color: var(--text);
+  min-height: 100vh;
+}
+
+/* ─── BACKGROUND ─── */
+.bg {
+  position: fixed; inset: 0; z-index: 0; pointer-events: none;
+  background:
+    radial-gradient(ellipse 60% 50% at 95% 10%, rgba(252,228,236,.55) 0%, transparent 60%),
+    radial-gradient(ellipse 50% 60% at 0% 90%, rgba(237,231,246,.45) 0%, transparent 60%),
+    var(--cream);
+}
+
+/* ─── SETUP ALERT ─── */
+#setupAlert {
+  position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+  background: linear-gradient(90deg, #fff3e0, #fce4ec);
+  border-bottom: 2px solid #ffb74d;
+  padding: .75rem 1.5rem;
+  display: flex; align-items: center; justify-content: space-between; gap: 1rem;
+  font-size: .82rem; color: #bf360c;
+}
+#setupAlert strong { color: #e65100; }
+#setupAlert code { background: rgba(0,0,0,.08); padding: 1px 6px; border-radius: 4px; font-family: monospace; }
+#setupAlert button { background: none; border: none; font-size: 1.2rem; cursor: pointer; color: #bf360c; flex-shrink: 0; }
+#setupAlert.hidden { display: none; }
+
+/* ─── LAYOUT ─── */
+.page {
+  position: relative; z-index: 1;
+  min-height: 100vh;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+}
+
+/* ─── LEFT PANEL ─── */
+.left {
+  padding: 3.5rem 3rem 3rem;
+  display: flex; flex-direction: column; justify-content: center;
+  position: sticky; top: 0; height: 100vh;
+  overflow: hidden;
+}
+
+.badge {
+  display: inline-flex; align-items: center; gap: 6px;
+  background: var(--rose-pale); color: var(--rose-dark);
+  padding: 5px 14px; border-radius: 100px;
+  font-size: .7rem; font-weight: 600; letter-spacing: .08em; text-transform: uppercase;
+  margin-bottom: 1.75rem; width: fit-content;
+}
+
+.left h1 {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: clamp(2.6rem, 4.5vw, 4rem);
+  font-weight: 300;
+  line-height: 1.1;
+  margin-bottom: 1.25rem;
+}
+.left h1 em { font-style: italic; color: var(--rose); }
+.left h1 strong { font-weight: 600; display: block; }
+
+.left p {
+  font-size: .95rem; color: var(--text-muted); line-height: 1.75;
+  max-width: 380px; margin-bottom: 2.5rem;
+}
+
+.contact-chips { display: flex; flex-direction: column; gap: .75rem; margin-bottom: 2.5rem; }
+.chip {
+  display: flex; align-items: center; gap: 12px;
+  font-size: .85rem; color: var(--text-muted);
+}
+.chip-icon {
+  width: 36px; height: 36px; border-radius: 50%;
+  background: var(--rose-pale); color: var(--rose);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 1rem; flex-shrink: 0;
+}
+
+.stats { display: flex; gap: 2rem; }
+.stat-num {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 2.4rem; font-weight: 600; color: var(--rose);
+  display: block; line-height: 1;
+}
+.stat-lbl { font-size: .72rem; color: var(--text-muted); text-transform: uppercase; letter-spacing: .06em; }
+
+.deco-circle {
+  position: absolute; bottom: -80px; left: -80px;
+  width: 340px; height: 340px; border-radius: 50%;
+  border: 60px solid var(--rose-pale); opacity: .4; pointer-events: none;
+}
+
+/* ─── RIGHT PANEL ─── */
+.right {
+  padding: 3.5rem 3rem 3rem;
+  overflow-y: auto;
+  display: flex; flex-direction: column; justify-content: center;
+}
+
+/* ─── CONFIG BOX ─── */
+.config-box {
+  background: #fff; border-radius: 16px;
+  border: 1.5px dashed var(--border);
+  padding: 1.5rem; margin-bottom: 1.75rem;
+  animation: fadeSlide .4s ease both;
+}
+.config-box h3 {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 1.2rem; font-weight: 600;
+  margin-bottom: .35rem;
+}
+.config-box p { font-size: .78rem; color: var(--text-muted); margin-bottom: 1rem; line-height: 1.6; }
+.cfg-row { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 10px; }
+.cfg-field label {
+  display: block; font-size: .7rem; font-weight: 600;
+  color: var(--text-muted); text-transform: uppercase; letter-spacing: .07em;
+  margin-bottom: 4px;
+}
+.cfg-field input {
+  width: 100%; padding: 9px 12px;
+  border: 1.5px solid var(--border); border-radius: 8px;
+  font-family: 'Outfit', sans-serif; font-size: .83rem;
+  outline: none; transition: border-color .2s;
+}
+.cfg-field input:focus { border-color: var(--rose); box-shadow: 0 0 0 3px rgba(194,24,91,.1); }
+.cfg-note { font-size: .7rem; color: var(--text-muted); margin-top: 3px; }
+
+/* ─── FORM CARD ─── */
+.form-card {
+  background: #fff;
+  border-radius: 20px;
+  border: 1px solid var(--border);
+  box-shadow: 0 4px 32px rgba(194,24,91,.07);
+  padding: 2.25rem;
+  position: relative;
+  overflow: hidden;
+  animation: fadeSlide .5s ease .1s both;
+}
+.form-card::before {
+  content: '';
+  position: absolute; top: 0; left: 0; right: 0; height: 3.5px;
+  background: linear-gradient(90deg, var(--rose), var(--plum), var(--gold));
+}
+
+.form-header { margin-bottom: 1.5rem; }
+.form-header h2 {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 1.6rem; font-weight: 600; margin-bottom: .2rem;
+}
+.form-header p { font-size: .82rem; color: var(--text-muted); }
+
+/* DB status pill */
+.db-status {
+  display: inline-flex; align-items: center; gap: 5px;
+  padding: 3px 10px; border-radius: 100px;
+  font-size: .72rem; font-weight: 500;
+  margin-bottom: 1.25rem;
+}
+.db-status .dot { width: 7px; height: 7px; border-radius: 50%; }
+.db-status.ok { background: var(--success-bg); color: var(--success); }
+.db-status.ok .dot { background: var(--success); }
+.db-status.err { background: #ffebee; color: var(--error); }
+.db-status.err .dot { background: var(--error); }
+.db-status.pending { background: #fff8e1; color: #f57f17; }
+.db-status.pending .dot { background: #f9a825; animation: blink .9s ease-in-out infinite; }
+@keyframes blink { 0%,100%{opacity:1} 50%{opacity:.3} }
+
+/* ─── FIELDS ─── */
+.field { margin-bottom: 1.1rem; }
+.field label {
+  display: block; font-size: .8rem; font-weight: 500;
+  color: var(--text); margin-bottom: 5px;
+}
+.field label .req { color: var(--rose); margin-left: 1px; }
+.field input, .field textarea {
+  width: 100%; padding: 11px 14px;
+  border: 1.5px solid var(--border); border-radius: 10px;
+  font-family: 'Outfit', sans-serif; font-size: .9rem;
+  color: var(--text); background: #fff;
+  transition: border-color .2s, box-shadow .2s;
+  outline: none;
+}
+.field input:focus, .field textarea:focus {
+  border-color: var(--rose);
+  box-shadow: 0 0 0 3px rgba(194,24,91,.1);
+}
+.field input.ok { border-color: var(--success); }
+.field input.err, .field textarea.err { border-color: var(--error); }
+.field textarea { resize: vertical; min-height: 120px; }
+.hint { font-size: .72rem; margin-top: 3px; }
+.hint.ok { color: var(--success); }
+.hint.err { color: var(--error); }
+.char-count { font-size: .7rem; color: var(--text-muted); text-align: right; margin-top: 3px; }
+.char-count.warn { color: var(--gold); }
+.char-count.over { color: var(--error); }
+
+/* ─── DOMAIN CHIPS ─── */
+.domain-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(148px, 1fr));
+  gap: 8px; margin-top: 6px;
+}
+.domain-chip {
+  display: flex; align-items: center; gap: 7px;
+  padding: 8px 12px; border-radius: 9px;
+  border: 1.5px solid var(--border);
+  cursor: pointer; transition: all .15s;
+  font-size: .82rem; color: var(--text-muted);
+  user-select: none;
+}
+.domain-chip:hover { border-color: var(--rose-light); background: var(--rose-pale); color: var(--rose-dark); }
+.domain-chip input[type=checkbox] { display: none; }
+.domain-chip:has(input:checked) {
+  border-color: var(--rose);
+  background: var(--rose-pale);
+  color: var(--rose-dark);
+  font-weight: 500;
+}
+.domain-chip span { pointer-events: none; }
+
+/* progress bar */
+.progress-wrap { margin-bottom: 1.25rem; }
+.progress-top {
+  display: flex; justify-content: space-between;
+  font-size: .7rem; color: var(--text-muted); margin-bottom: 5px;
+}
+.pbar { height: 3px; background: var(--border); border-radius: 100px; overflow: hidden; }
+.pfill {
+  height: 100%;
+  background: linear-gradient(90deg, var(--rose), var(--plum));
+  border-radius: 100px;
+  transition: width .4s ease;
+}
+
+/* submit */
+.submit-btn {
+  width: 100%; padding: 13px;
+  background: linear-gradient(135deg, var(--rose), var(--rose-dark));
+  color: #fff; border: none; border-radius: 11px;
+  font-family: 'Outfit', sans-serif; font-size: .95rem; font-weight: 600;
+  cursor: pointer; transition: all .25s;
+  display: flex; align-items: center; justify-content: center; gap: 8px;
+  margin-top: 1.25rem;
+  letter-spacing: .02em;
+}
+.submit-btn:hover:not(:disabled) {
+  box-shadow: 0 8px 32px rgba(194,24,91,.3);
+  transform: translateY(-1px);
+}
+.submit-btn:disabled { opacity: .6; cursor: not-allowed; }
+
+.spinner {
+  width: 16px; height: 16px;
+  border: 2px solid rgba(255,255,255,.3);
+  border-top-color: #fff; border-radius: 50%;
+  animation: spin .65s linear infinite; display: none;
+}
+@keyframes spin { to { transform: rotate(360deg); } }
+
+/* ─── SUCCESS ─── */
+.success-screen {
+  text-align: center; padding: 2.5rem 1rem;
+  display: none;
+  animation: fadeSlide .4s ease both;
+}
+.s-icon {
+  width: 72px; height: 72px; border-radius: 50%;
+  background: var(--success-bg);
+  margin: 0 auto 1.25rem;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 1.9rem;
+  animation: pop .45s cubic-bezier(.175,.885,.32,1.275);
+}
+@keyframes pop { from{transform:scale(0);opacity:0} to{transform:scale(1);opacity:1} }
+.success-screen h2 {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 1.75rem; font-weight: 600;
+  color: var(--success); margin-bottom: .5rem;
+}
+.success-screen p { font-size: .88rem; color: var(--text-muted); line-height: 1.7; margin-bottom: 1rem; }
+.ref-box {
+  display: inline-block;
+  background: var(--success-bg); border: 1px solid #a5d6a7;
+  border-radius: 8px; padding: 6px 16px;
+  font-size: .78rem; font-weight: 600; color: var(--success); letter-spacing: .06em;
+  margin-bottom: 1.25rem;
+}
+.send-another {
+  background: none; border: 1.5px solid var(--rose);
+  color: var(--rose); border-radius: 9px;
+  padding: 9px 22px; font-family: 'Outfit', sans-serif;
+  font-size: .85rem; font-weight: 500; cursor: pointer;
+  transition: all .2s;
+}
+.send-another:hover { background: var(--rose); color: #fff; }
+
+/* ─── TOAST ─── */
+.toast {
+  position: fixed; bottom: 1.5rem; right: 1.5rem; z-index: 999;
+  background: var(--text); color: #fff;
+  padding: .7rem 1.25rem; border-radius: 10px;
+  font-size: .83rem; font-weight: 500;
+  transform: translateY(20px); opacity: 0;
+  transition: all .3s ease; pointer-events: none;
+}
+.toast.show { transform: translateY(0); opacity: 1; }
+
+@keyframes fadeSlide { from{opacity:0;transform:translateY(14px)} to{opacity:1;transform:translateY(0)} }
+
+/* ─── RESPONSIVE ─── */
+@media (max-width: 860px) {
+  .page { grid-template-columns: 1fr; }
+  .left { position: relative; height: auto; padding: 2.5rem 1.5rem 2rem; }
+  .deco-circle { display: none; }
+  .right { padding: 1.5rem; }
+  #setupAlert { flex-direction: column; align-items: flex-start; }
+}
+</style>
+</head>
+<body>
+
+<!-- SETUP ALERT -->
+<div id="setupAlert">
+  <span>⚡ <strong>Supabase not connected.</strong> Add your <code>SB_URL</code> and <code>SB_KEY</code> below — or the form runs in demo mode. Create a table named <code>contact_messages</code> with columns: <code>id, name, email, message, created_at</code>.</span>
+  <button onclick="document.getElementById('setupAlert').classList.add('hidden')">×</button>
+</div>
+
+<div class="bg"></div>
+
+<div class="page" id="mainPage">
+
+  <!-- LEFT PANEL -->
+  <div class="left">
+    <div class="badge">💜 Women Empowerment</div>
+    <h1>
+      <em>Let's</em>
+      <strong>Connect &amp;<br>Make Change</strong>
+    </h1>
+    <p>Whether you want to volunteer, partner, or simply learn more — we'd love to hear from you. Every message matters to us.</p>
+
+    <div class="contact-chips">
+      <div class="chip">
+        <div class="chip-icon">✉️</div>
+        <span>hello@shecancfoundation.org</span>
+      </div>
+      <div class="chip">
+        <div class="chip-icon">📍</div>
+        <span>Empowering women across India &amp; beyond</span>
+      </div>
+      <div class="chip">
+        <div class="chip-icon">💬</div>
+        <span>We reply within 24 hours</span>
+      </div>
+    </div>
+
+    <div class="stats">
+      <div>
+        <span class="stat-num" id="sStat">–</span>
+        <span class="stat-lbl">Messages<br>Received</span>
+      </div>
+      <div>
+        <span class="stat-num">12K+</span>
+        <span class="stat-lbl">Women<br>Supported</span>
+      </div>
+      <div>
+        <span class="stat-num">8</span>
+        <span class="stat-lbl">Years<br>Active</span>
+      </div>
+    </div>
+
+    <div class="deco-circle"></div>
+  </div>
+
+  <!-- RIGHT PANEL -->
+  <div class="right">
+
+    <!-- SUPABASE CONFIG -->
+    <div class="config-box" id="configBox">
+      <h3>🔌 Connect Supabase</h3>
+      <p>Paste your project URL and anon key — messages will be saved to your Supabase table in real-time. Leave blank to use demo mode.</p>
+      <div class="cfg-row">
+        <div class="cfg-field">
+          <label>Project URL</label>
+          <input type="url" id="cfgUrl" placeholder="https://xxxx.supabase.co">
+          <div class="cfg-note">Settings → API → Project URL</div>
+        </div>
+        <div class="cfg-field">
+          <label>Anon / Public Key</label>
+          <input type="text" id="cfgKey" placeholder="eyJhbGciOi...">
+          <div class="cfg-note">Settings → API → anon public</div>
+        </div>
+      </div>
+      <button class="submit-btn" style="margin-top:.5rem;width:auto;padding:9px 22px;font-size:.85rem" onclick="connectSupabase()">Connect →</button>
+    </div>
+
+    <!-- FORM CARD -->
+    <div class="form-card" id="formCard">
+
+      <div id="dbStatus" class="db-status pending">
+        <span class="dot"></span>
+        <span id="dbStatusText">Not connected — Demo Mode</span>
+      </div>
+
+      <div class="form-header">
+        <h2>Send Us a Message</h2>
+        <p>Fill in the details below — it takes less than a minute.</p>
+      </div>
+
+      <!-- PROGRESS -->
+      <div class="progress-wrap">
+        <div class="progress-top">
+          <span>Form progress</span>
+          <span id="progPct">0%</span>
+        </div>
+        <div class="pbar"><div class="pfill" id="pFill" style="width:0%"></div></div>
+      </div>
+
+      <!-- FORM -->
+      <div id="contactForm">
+
+        <!-- Row: Name + Phone -->
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:1rem">
+          <div class="field">
+            <label for="fName">Full Name <span class="req">*</span></label>
+            <input type="text" id="fName" placeholder="e.g. Priya Sharma" oninput="validate(this,'name');updateProgress()" autocomplete="name">
+            <div class="hint" id="hName"></div>
+          </div>
+          <div class="field">
+            <label for="fPhone">Phone Number</label>
+            <input type="tel" id="fPhone" placeholder="+91 98765 43210" oninput="validate(this,'phone');updateProgress()" autocomplete="tel">
+            <div class="hint" id="hPhone"></div>
+          </div>
+        </div>
+
+        <!-- Row: Email + City -->
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:1rem">
+          <div class="field">
+            <label for="fEmail">Email Address <span class="req">*</span></label>
+            <input type="email" id="fEmail" placeholder="priya@example.com" oninput="validate(this,'email');updateProgress()" autocomplete="email">
+            <div class="hint" id="hEmail"></div>
+          </div>
+          <div class="field">
+            <label for="fCity">City / Location</label>
+            <input type="text" id="fCity" placeholder="e.g. Hyderabad" oninput="updateProgress()" autocomplete="address-level2">
+          </div>
+        </div>
+
+        <!-- Interested Domains -->
+        <div class="field">
+          <label>Areas of Interest <span style="font-size:.72rem;color:var(--text-muted);font-weight:400">(select all that apply)</span></label>
+          <div class="domain-grid">
+            <label class="domain-chip">
+              <input type="checkbox" value="Mentorship" onchange="updateProgress()">
+              <span>🎓 Mentorship</span>
+            </label>
+            <label class="domain-chip">
+              <input type="checkbox" value="Scholarships" onchange="updateProgress()">
+              <span>📚 Scholarships</span>
+            </label>
+            <label class="domain-chip">
+              <input type="checkbox" value="Workshops" onchange="updateProgress()">
+              <span>🛠 Workshops</span>
+            </label>
+            <label class="domain-chip">
+              <input type="checkbox" value="Networking" onchange="updateProgress()">
+              <span>🤝 Networking</span>
+            </label>
+            <label class="domain-chip">
+              <input type="checkbox" value="Volunteering" onchange="updateProgress()">
+              <span>💪 Volunteering</span>
+            </label>
+            <label class="domain-chip">
+              <input type="checkbox" value="Fundraising" onchange="updateProgress()">
+              <span>💰 Fundraising</span>
+            </label>
+            <label class="domain-chip">
+              <input type="checkbox" value="Healthcare" onchange="updateProgress()">
+              <span>🏥 Healthcare</span>
+            </label>
+            <label class="domain-chip">
+              <input type="checkbox" value="Technology" onchange="updateProgress()">
+              <span>💻 Technology</span>
+            </label>
+            <label class="domain-chip">
+              <input type="checkbox" value="Legal Aid" onchange="updateProgress()">
+              <span>⚖️ Legal Aid</span>
+            </label>
+            <label class="domain-chip">
+              <input type="checkbox" value="Entrepreneurship" onchange="updateProgress()">
+              <span>🚀 Entrepreneurship</span>
+            </label>
+          </div>
+        </div>
+
+        <div class="field">
+          <label for="fMessage">Your Message <span class="req">*</span></label>
+          <textarea id="fMessage" placeholder="Tell us how we can help, or how you'd like to get involved…" oninput="validate(this,'msg');updateProgress();countChars()"></textarea>
+          <div style="display:flex;justify-content:space-between;align-items:center">
+            <div class="hint" id="hMsg"></div>
+            <div class="char-count" id="charCt">0 / 500</div>
+          </div>
+        </div>
+
+        <button class="submit-btn" id="submitBtn" onclick="submitForm()">
+          <span id="btnText">Send Message 💌</span>
+          <div class="spinner" id="spinner"></div>
+        </button>
+      </div>
+
+      <!-- SUCCESS -->
+      <div class="success-screen" id="successScreen">
+        <div class="s-icon">✅</div>
+        <h2>Message Sent!</h2>
+        <p>Thank you for reaching out. Our team will get back to you within 24 hours.</p>
+        <div class="ref-box" id="refBox">REF #SCF-000000</div>
+        <br>
+        <button class="send-another" onclick="resetForm()">Send Another Message</button>
+      </div>
+
+    </div>
+  </div>
+
+</div>
+
+<!-- TOAST -->
+<div class="toast" id="toast"></div>
+
+<script>
+// ────────────────────────────────────────────────────────────────
+// SUPABASE CONFIG  (pre-fill from URL params for convenience)
+// ────────────────────────────────────────────────────────────────
+let SB_URL = '';
+let SB_KEY = '';
+let demoMode = true;
+const DEMO_KEY = 'scf_demo_messages';
+
+// Try to restore from sessionStorage
+try {
+  SB_URL = sessionStorage.getItem('scf_sb_url') || '';
+  SB_KEY = sessionStorage.getItem('scf_sb_key') || '';
+  if (SB_URL && SB_KEY) {
+    document.getElementById('cfgUrl').value = SB_URL;
+    document.getElementById('cfgKey').value = SB_KEY;
+    connectSupabase();
+  }
+} catch(e) {}
+
+// ────────────────────────────────────────────────────────────────
+// CONNECT SUPABASE
+// ────────────────────────────────────────────────────────────────
+async function connectSupabase() {
+  const url = document.getElementById('cfgUrl').value.trim();
+  const key = document.getElementById('cfgKey').value.trim();
+
+  if (!url || !key) {
+    setStatus('pending', 'Demo Mode — no credentials');
+    demoMode = true;
+    toast('Running in demo mode');
+    return;
+  }
+
+  setStatus('pending', 'Connecting…');
+  try {
+    const res = await fetch(`${url}/rest/v1/contact_messages?select=count`, {
+      headers: {
+        'apikey': key,
+        'Authorization': `Bearer ${key}`
+      }
+    });
+    if (!res.ok) throw new Error(`HTTP ${res.status}`);
+    SB_URL = url; SB_KEY = key; demoMode = false;
+    sessionStorage.setItem('scf_sb_url', url);
+    sessionStorage.setItem('scf_sb_key', key);
+    setStatus('ok', 'Connected to Supabase ✓');
+    document.getElementById('configBox').style.display = 'none';
+    document.getElementById('setupAlert').classList.add('hidden');
+    toast('✅ Supabase connected!');
+    loadMsgCount();
+  } catch(err) {
+    setStatus('err', 'Connection failed — check credentials');
+    toast('❌ ' + err.message);
+  }
+}
+
+function setStatus(type, text) {
+  const el = document.getElementById('dbStatus');
+  el.className = 'db-status ' + type;
+  document.getElementById('dbStatusText').textContent = text;
+}
+
+// ────────────────────────────────────────────────────────────────
+// LOAD STATS
+// ────────────────────────────────────────────────────────────────
+async function loadMsgCount() {
+  try {
+    let count;
+    if (demoMode) {
+      const d = JSON.parse(localStorage.getItem(DEMO_KEY) || '[]');
+      count = d.length;
+    } else {
+      const res = await fetch(`${SB_URL}/rest/v1/contact_messages?select=id`, {
+        headers: { 'apikey': SB_KEY, 'Authorization': `Bearer ${SB_KEY}` }
+      });
+      const data = await res.json();
+      count = Array.isArray(data) ? data.length : 0;
+    }
+    document.getElementById('sStat').textContent = count + '+';
+  } catch(e) {
+    document.getElementById('sStat').textContent = '–';
+  }
+}
+loadMsgCount();
+
+// ────────────────────────────────────────────────────────────────
+// VALIDATION
+// ────────────────────────────────────────────────────────────────
+function validate(el, type) {
+  const v = el.value.trim();
+  let ok = false, msg = '';
+
+  if (type === 'name') {
+    ok = v.length >= 2;
+    msg = ok ? '✓ Looks good' : 'Please enter your full name';
+  } else if (type === 'email') {
+    ok = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v);
+    msg = ok ? '✓ Valid email' : 'Enter a valid email address';
+  } else if (type === 'msg') {
+    ok = v.length >= 10;
+    msg = ok ? '✓ Great!' : 'Message must be at least 10 characters';
+  }
+
+  el.className = v ? (ok ? 'ok' : 'err') : '';
+  const hintEl = document.getElementById('h' + ({ name: 'Name', email: 'Email', msg: 'Msg' }[type]));
+  if (hintEl) {
+    hintEl.textContent = v ? msg : '';
+    hintEl.className = 'hint ' + (ok ? 'ok' : 'err');
+  }
+  return ok;
+}
+
+function countChars() {
+  const len = document.getElementById('fMessage').value.length;
+  const el = document.getElementById('charCt');
+  el.textContent = len + ' / 500';
+  el.className = 'char-count' + (len > 450 ? ' warn' : '') + (len > 500 ? ' over' : '');
+}
+
+function updateProgress() {
+  const fields = ['fName', 'fEmail', 'fMessage'];
+  const filled = fields.filter(id => document.getElementById(id).value.trim().length > 0).length;
+  const pct = Math.round((filled / fields.length) * 100);
+  document.getElementById('pFill').style.width = pct + '%';
+  document.getElementById('progPct').textContent = pct + '%';
+}
+
+// ────────────────────────────────────────────────────────────────
+// SUBMIT
+// ────────────────────────────────────────────────────────────────
+async function submitForm() {
+  const nameOk  = validate(document.getElementById('fName'), 'name');
+  const emailOk = validate(document.getElementById('fEmail'), 'email');
+  const msgOk   = validate(document.getElementById('fMessage'), 'msg');
+
+  if (!nameOk || !emailOk || !msgOk) {
+    toast('Please fill all required fields correctly.');
+    return;
+  }
+
+  const payload = {
+    name:    document.getElementById('fName').value.trim(),
+    email:   document.getElementById('fEmail').value.trim(),
+    message: document.getElementById('fMessage').value.trim(),
+    created_at: new Date().toISOString()
+  };
+
+  const btn = document.getElementById('submitBtn');
+  const spinner = document.getElementById('spinner');
+  const btnText = document.getElementById('btnText');
+  btn.disabled = true;
+  spinner.style.display = 'block';
+  btnText.textContent = 'Sending…';
+
+  try {
+    let savedId;
+    if (demoMode) {
+      // Demo: save to localStorage
+      const existing = JSON.parse(localStorage.getItem(DEMO_KEY) || '[]');
+      const entry = { ...payload, id: 'demo_' + Date.now() };
+      existing.unshift(entry);
+      localStorage.setItem(DEMO_KEY, JSON.stringify(existing));
+      savedId = entry.id;
+    } else {
+      // Real Supabase insert
+      const res = await fetch(`${SB_URL}/rest/v1/contact_messages`, {
+        method: 'POST',
+        headers: {
+          'apikey': SB_KEY,
+          'Authorization': `Bearer ${SB_KEY}`,
+          'Content-Type': 'application/json',
+          'Prefer': 'return=representation'
+        },
+        body: JSON.stringify(payload)
+      });
+      if (!res.ok) {
+        const errBody = await res.text();
+        throw new Error(errBody || `HTTP ${res.status}`);
+      }
+      const data = await res.json();
+      savedId = data[0]?.id || 'unknown';
+    }
+
+    // Show success
+    const ref = 'SCF-' + String(Math.floor(Math.random() * 999999)).padStart(6, '0');
+    document.getElementById('refBox').textContent = 'REF #' + ref;
+    document.getElementById('contactForm').style.display = 'none';
+    document.getElementById('successScreen').style.display = 'block';
+    document.getElementById('progressWrap') && (document.getElementById('progressWrap').style.display = 'none');
+    loadMsgCount();
+
+  } catch(err) {
+    toast('❌ Failed to send: ' + err.message);
+    btn.disabled = false;
+    spinner.style.display = 'none';
+    btnText.textContent = 'Send Message 💌';
+  }
+}
+
+// ────────────────────────────────────────────────────────────────
+// RESET
+// ────────────────────────────────────────────────────────────────
+function resetForm() {
+  ['fName','fEmail','fMessage'].forEach(id => {
+    const el = document.getElementById(id);
+    el.value = ''; el.className = '';
+  });
+  ['hName','hEmail','hMsg'].forEach(id => {
+    document.getElementById(id).textContent = '';
+  });
+  document.getElementById('charCt').textContent = '0 / 500';
+  document.getElementById('pFill').style.width = '0%';
+  document.getElementById('progPct').textContent = '0%';
+  document.getElementById('submitBtn').disabled = false;
+  document.getElementById('spinner').style.display = 'none';
+  document.getElementById('btnText').textContent = 'Send Message 💌';
+  document.getElementById('contactForm').style.display = 'block';
+  document.getElementById('successScreen').style.display = 'none';
+}
+
+// ────────────────────────────────────────────────────────────────
+// TOAST
+// ────────────────────────────────────────────────────────────────
+function toast(msg) {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.classList.add('show');
+  setTimeout(() => t.classList.remove('show'), 3000);
+}
+</script>
+</body>
+</html>
