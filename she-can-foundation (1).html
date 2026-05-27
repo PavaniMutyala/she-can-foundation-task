@@ -692,12 +692,15 @@ async function submitForm() {
     return;
   }
 
-  const payload = {
-    name:    document.getElementById('fName').value.trim(),
-    email:   document.getElementById('fEmail').value.trim(),
-    message: document.getElementById('fMessage').value.trim(),
-    created_at: new Date().toISOString()
-  };
+ const payload = {
+  name: document.getElementById('fName').value.trim(),
+  email: document.getElementById('fEmail').value.trim(),
+  phone: document.getElementById('fPhone').value.trim(),
+  city: document.getElementById('fCity').value.trim(),
+  interests: [...document.querySelectorAll('.domain-chip input:checked')].map(i => i.value),
+  message: document.getElementById('fMessage').value.trim(),
+  created_at: new Date().toISOString()
+};
 
   const btn = document.getElementById('submitBtn');
   const spinner = document.getElementById('spinner');
