@@ -1,0 +1,827 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>She Can Foundation — Connect With Us</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+:root {
+  --rose:#c2185b; --rose-light:#f8bbd9; --rose-pale:#fce4ec; --rose-dark:#880e4f;
+  --plum:#4a148c; --gold:#f9a825;
+  --cream:#fffdf9; --text:#1a1a2e; --text-muted:#6b6b8a; --border:#e8e0f0;
+  --success:#2e7d32; --success-bg:#e8f5e9; --error:#c62828; --error-bg:#ffebee;
+  --shadow:0 4px 24px rgba(194,24,91,.08); --shadow-h:0 8px 40px rgba(194,24,91,.18);
+}
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'DM Sans',sans-serif;background:var(--cream);color:var(--text);min-height:100vh;overflow-x:hidden}
+.bg-blobs{position:fixed;inset:0;z-index:0;pointer-events:none;overflow:hidden}
+.bg-blobs::before{content:'';position:absolute;top:-120px;right:-120px;width:500px;height:500px;border-radius:50%;background:radial-gradient(circle,#fce4ec 0%,transparent 70%)}
+.bg-blobs::after{content:'';position:absolute;bottom:-100px;left:-100px;width:400px;height:400px;border-radius:50%;background:radial-gradient(circle,#ede7f6 0%,transparent 70%)}
+
+/* NAV */
+nav{position:relative;z-index:10;display:flex;align-items:center;justify-content:space-between;padding:1.1rem 2rem;background:#fff;border-bottom:1px solid var(--border);box-shadow:0 2px 12px rgba(0,0,0,.04)}
+.nav-brand{display:flex;align-items:center;gap:10px;cursor:pointer}
+.nav-logo{width:36px;height:36px;border-radius:50%;background:linear-gradient(135deg,var(--rose),var(--plum));display:flex;align-items:center;justify-content:center;font-size:18px}
+.nav-title{font-family:'DM Serif Display',serif;font-size:1.15rem;color:var(--rose-dark)}
+.nav-links{display:flex;gap:8px;flex-wrap:wrap}
+.nav-btn{padding:8px 18px;border-radius:100px;font-size:.85rem;font-family:'DM Sans',sans-serif;font-weight:500;cursor:pointer;transition:all .2s;border:none}
+.nb-ghost{background:transparent;color:var(--text-muted);border:1.5px solid var(--border)}
+.nb-ghost:hover{border-color:var(--rose);color:var(--rose)}
+.nb-solid{background:var(--rose);color:#fff}
+.nb-solid:hover{background:var(--rose-dark)}
+.nb-active{background:var(--rose-pale);color:var(--rose-dark);border:1.5px solid var(--rose-light)}
+
+/* VIEWS */
+.view{display:none;position:relative;z-index:1}
+.view.active{display:block}
+
+/* SETUP BANNER */
+.setup-banner{background:linear-gradient(135deg,#fff3e0,#fce4ec);border:1.5px solid #ffcc80;border-radius:14px;padding:1.25rem 1.5rem;margin:1.5rem auto;max-width:700px;display:flex;gap:14px;align-items:flex-start}
+.setup-banner .icon{font-size:1.6rem;flex-shrink:0}
+.setup-banner h3{font-size:.95rem;font-weight:600;color:#e65100;margin-bottom:.4rem}
+.setup-banner p{font-size:.82rem;color:#bf360c;line-height:1.55}
+.setup-banner code{background:rgba(0,0,0,.07);padding:1px 5px;border-radius:4px;font-size:.8rem;font-family:monospace}
+.setup-banner.hidden{display:none}
+
+/* SUPABASE CONFIG FORM */
+.config-card{background:#fff;border-radius:16px;border:1.5px dashed var(--border);padding:1.75rem;max-width:700px;margin:0 auto 2rem}
+.config-card h3{font-family:'DM Serif Display',serif;font-size:1.25rem;margin-bottom:.5rem}
+.config-card p{font-size:.85rem;color:var(--text-muted);margin-bottom:1.25rem;line-height:1.6}
+.config-row{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:12px}
+.cfg-field label{display:block;font-size:.78rem;font-weight:600;color:var(--text-muted);text-transform:uppercase;letter-spacing:.06em;margin-bottom:5px}
+.cfg-field input{width:100%;padding:10px 14px;border:1.5px solid var(--border);border-radius:9px;font-family:'DM Sans',sans-serif;font-size:.88rem;outline:none;transition:border-color .2s}
+.cfg-field input:focus{border-color:var(--rose);box-shadow:0 0 0 3px rgba(194,24,91,.1)}
+.cfg-note{font-size:.75rem;color:var(--text-muted);margin-top:4px}
+
+/* HERO */
+.hero{max-width:680px;margin:0 auto;padding:3.5rem 1.5rem 1.5rem;text-align:center}
+.hero-badge{display:inline-flex;align-items:center;gap:6px;background:var(--rose-pale);color:var(--rose-dark);padding:6px 16px;border-radius:100px;font-size:.78rem;font-weight:600;letter-spacing:.05em;text-transform:uppercase;margin-bottom:1.25rem}
+.hero h1{font-family:'DM Serif Display',serif;font-size:clamp(2rem,5vw,3rem);line-height:1.15;margin-bottom:.9rem}
+.hero h1 em{font-style:italic;color:var(--rose)}
+.hero p{font-size:1rem;color:var(--text-muted);line-height:1.7;max-width:460px;margin:0 auto 2rem}
+
+/* STATS */
+.stats-strip{display:flex;gap:1px;background:var(--border);border-radius:14px;overflow:hidden;margin:0 auto 2.5rem;max-width:640px}
+.stat{flex:1;background:#fff;padding:1.1rem;text-align:center}
+.stat-num{font-family:'DM Serif Display',serif;font-size:1.7rem;color:var(--rose);display:block}
+.stat-label{font-size:.75rem;color:var(--text-muted)}
+
+/* FORM CARD */
+.form-card{background:#fff;border-radius:20px;border:1px solid var(--border);box-shadow:var(--shadow);padding:2.25rem;max-width:640px;margin:0 auto 4rem;position:relative;overflow:hidden}
+.form-card::before{content:'';position:absolute;top:0;left:0;right:0;height:4px;background:linear-gradient(90deg,var(--rose),var(--plum),var(--gold))}
+.sec-title{font-size:.72rem;font-weight:700;text-transform:uppercase;letter-spacing:.1em;color:var(--text-muted);margin-bottom:1.25rem}
+.field{margin-bottom:1.1rem}
+.field label{display:block;font-size:.875rem;font-weight:500;color:var(--text);margin-bottom:5px}
+.field label span{color:var(--rose)}
+.field input,.field select,.field textarea{width:100%;padding:11px 15px;border:1.5px solid var(--border);border-radius:10px;font-family:'DM Sans',sans-serif;font-size:.92rem;color:var(--text);background:#fff;transition:border-color .2s,box-shadow .2s;outline:none}
+.field input:focus,.field select:focus,.field textarea:focus{border-color:var(--rose);box-shadow:0 0 0 3px rgba(194,24,91,.1)}
+.field input.v-ok{border-color:var(--success)}
+.field input.v-err,.field textarea.v-err{border-color:var(--error)}
+.field textarea{resize:vertical;min-height:115px}
+.field-row{display:grid;grid-template-columns:1fr 1fr;gap:1rem}
+.hint{font-size:.76rem;margin-top:4px;display:flex;align-items:center;gap:3px}
+.hint.ok{color:var(--success)}.hint.err{color:var(--error)}.hint.info{color:var(--text-muted)}
+.char-ct{font-size:.74rem;color:var(--text-muted);text-align:right;margin-top:3px}
+.char-ct.warn{color:var(--gold)}.char-ct.over{color:var(--error)}
+.cb-group{display:flex;flex-direction:column;gap:7px;margin-top:5px}
+.cb-item{display:flex;align-items:center;gap:10px;padding:9px 13px;border-radius:8px;border:1.5px solid var(--border);cursor:pointer;transition:all .15s;user-select:none}
+.cb-item:hover{border-color:var(--rose-light);background:var(--rose-pale)}
+.cb-item input{accent-color:var(--rose);width:15px;height:15px;cursor:pointer}
+.cb-item .lbl{font-size:.86rem}
+
+/* PROGRESS */
+.progress-wrap{margin-bottom:1.5rem}
+.progress-top{display:flex;justify-content:space-between;font-size:.73rem;color:var(--text-muted);margin-bottom:5px}
+.pbar{height:4px;background:var(--border);border-radius:100px;overflow:hidden}
+.pfill{height:100%;background:linear-gradient(90deg,var(--rose),var(--plum));border-radius:100px;transition:width .4s ease}
+
+/* SUBMIT */
+.submit-btn{width:100%;padding:13px;background:linear-gradient(135deg,var(--rose),var(--rose-dark));color:#fff;border:none;border-radius:12px;font-family:'DM Sans',sans-serif;font-size:1rem;font-weight:600;cursor:pointer;transition:all .25s;display:flex;align-items:center;justify-content:center;gap:9px;margin-top:1.5rem}
+.submit-btn:hover:not(:disabled){box-shadow:var(--shadow-h);transform:translateY(-1px)}
+.submit-btn:disabled{opacity:.6;cursor:not-allowed}
+.spinner{width:17px;height:17px;border:2px solid rgba(255,255,255,.35);border-top-color:#fff;border-radius:50%;animation:spin .7s linear infinite;display:none}
+@keyframes spin{to{transform:rotate(360deg)}}
+
+/* SUCCESS */
+.success-screen{text-align:center;padding:2.5rem 1.5rem}
+.s-icon{width:76px;height:76px;border-radius:50%;background:var(--success-bg);margin:0 auto 1.25rem;display:flex;align-items:center;justify-content:center;font-size:2rem;animation:popIn .4s cubic-bezier(.175,.885,.32,1.275)}
+@keyframes popIn{from{transform:scale(0);opacity:0}to{transform:scale(1);opacity:1}}
+.success-screen h2{font-family:'DM Serif Display',serif;font-size:1.7rem;color:var(--success);margin-bottom:.6rem}
+.success-screen p{color:var(--text-muted);line-height:1.7;margin-bottom:1.25rem}
+.ref-box{display:inline-block;background:var(--success-bg);border:1px solid #a5d6a7;border-radius:8px;padding:7px 18px;font-size:.83rem;font-weight:600;color:var(--success);letter-spacing:.05em}
+
+/* LOGIN */
+.login-wrap{max-width:370px;margin:4rem auto;padding:1.5rem}
+.login-card{background:#fff;border-radius:20px;border:1px solid var(--border);padding:2.25rem;box-shadow:var(--shadow)}
+.login-card h2{font-family:'DM Serif Display',serif;font-size:1.45rem;margin-bottom:.4rem;text-align:center}
+.login-card .sub{text-align:center;color:var(--text-muted);font-size:.85rem;margin-bottom:1.75rem}
+.l-err{background:var(--error-bg);color:var(--error);border-radius:8px;padding:9px 13px;font-size:.83rem;margin-bottom:.9rem;display:none}
+
+/* ADMIN */
+.admin-wrap{max-width:960px;margin:0 auto;padding:2rem 1.5rem 4rem}
+.admin-hdr{display:flex;align-items:center;justify-content:space-between;margin-bottom:1.75rem;flex-wrap:wrap;gap:1rem}
+.admin-hdr h2{font-family:'DM Serif Display',serif;font-size:1.6rem}
+.a-stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));gap:10px;margin-bottom:1.75rem}
+.a-stat{background:#fff;border:1px solid var(--border);border-radius:12px;padding:.9rem 1.1rem}
+.a-stat .num{font-size:1.55rem;font-weight:700;color:var(--rose);display:block}
+.a-stat .lbl{font-size:.75rem;color:var(--text-muted)}
+.filters{display:flex;gap:7px;flex-wrap:wrap;margin-bottom:1.1rem}
+.chip{padding:5px 13px;border-radius:100px;font-size:.78rem;font-weight:500;cursor:pointer;transition:all .15s;border:1.5px solid var(--border);background:#fff;color:var(--text-muted)}
+.chip.on{border-color:var(--rose);background:var(--rose-pale);color:var(--rose-dark)}
+.tbl{width:100%;border-collapse:separate;border-spacing:0;background:#fff;border-radius:14px;border:1px solid var(--border);overflow:hidden}
+.tbl th{background:#fafafa;text-align:left;padding:9px 13px;font-size:.75rem;font-weight:600;color:var(--text-muted);text-transform:uppercase;letter-spacing:.06em;border-bottom:1px solid var(--border)}
+.tbl td{padding:12px 13px;font-size:.85rem;border-bottom:1px solid var(--border);color:var(--text)}
+.tbl tr:last-child td{border-bottom:none}
+.tbl tr:hover td{background:#fafafa}
+.pill{display:inline-block;padding:2px 8px;border-radius:100px;font-size:.7rem;font-weight:600;margin:1px}
+.ab{padding:4px 11px;border-radius:6px;font-size:.76rem;cursor:pointer;border:none;font-family:'DM Sans',sans-serif;transition:all .15s}
+.ab-v{background:var(--rose-pale);color:var(--rose-dark)}.ab-v:hover{background:var(--rose-light)}
+.ab-d{background:#ffebee;color:#c62828;margin-left:4px}.ab-d:hover{background:#ffcdd2}
+.empty{text-align:center;padding:2.5rem;color:var(--text-muted)}
+
+/* DB STATUS badge */
+.db-status{display:inline-flex;align-items:center;gap:6px;padding:4px 12px;border-radius:100px;font-size:.75rem;font-weight:600;border:1.5px solid}
+.db-ok{background:#e8f5e9;color:#2e7d32;border-color:#a5d6a7}
+.db-err{background:#ffebee;color:#c62828;border-color:#ffcdd2}
+.db-wait{background:#fff9c4;color:#f57f17;border-color:#ffe082}
+.db-dot{width:7px;height:7px;border-radius:50%;background:currentColor}
+
+/* MODAL */
+.moverlay{display:none;position:fixed;inset:0;z-index:100;background:rgba(26,26,46,.5);backdrop-filter:blur(4px);align-items:center;justify-content:center;padding:1rem}
+.moverlay.open{display:flex}
+.modal{background:#fff;border-radius:20px;padding:1.75rem;max-width:500px;width:100%;box-shadow:0 20px 60px rgba(0,0,0,.2);animation:slideUp .25s ease;max-height:90vh;overflow-y:auto}
+@keyframes slideUp{from{transform:translateY(18px);opacity:0}to{transform:translateY(0);opacity:1}}
+.mhdr{display:flex;justify-content:space-between;align-items:center;margin-bottom:1.25rem}
+.mtitle{font-family:'DM Serif Display',serif;font-size:1.2rem}
+.mclose{background:none;border:none;font-size:1.3rem;cursor:pointer;color:var(--text-muted)}
+.mclose:hover{color:var(--text)}
+.drow{display:flex;gap:1rem;margin-bottom:.8rem;padding-bottom:.8rem;border-bottom:1px solid var(--border)}
+.drow:last-child{border-bottom:none;margin-bottom:0}
+.dlbl{font-size:.76rem;font-weight:600;text-transform:uppercase;letter-spacing:.07em;color:var(--text-muted);min-width:85px;padding-top:2px}
+.dval{font-size:.88rem;color:var(--text);flex:1;line-height:1.6}
+
+/* TOAST */
+.toast{position:fixed;bottom:1.75rem;right:1.75rem;z-index:200;background:var(--text);color:#fff;padding:11px 18px;border-radius:10px;font-size:.85rem;box-shadow:0 8px 30px rgba(0,0,0,.2);transform:translateY(100px);opacity:0;transition:all .3s cubic-bezier(.175,.885,.32,1.275);max-width:280px}
+.toast.show{transform:translateY(0);opacity:1}
+
+@media(max-width:600px){
+  .field-row{grid-template-columns:1fr}
+  .config-row{grid-template-columns:1fr}
+  nav{padding:1rem}
+  .nav-title{font-size:.95rem}
+  .tbl td,.tbl th{padding:9px 9px}
+  .hide-m{display:none}
+  .form-card{padding:1.5rem 1.1rem}
+}
+</style>
+</head>
+<body>
+<div class="bg-blobs"></div>
+
+<!-- NAV -->
+<nav>
+  <div class="nav-brand" onclick="showView('home')">
+    <div class="nav-logo">🌱</div>
+    <span class="nav-title">She Can Foundation</span>
+  </div>
+  <div class="nav-links">
+    <span id="dbStatusBadge" class="db-status db-wait"><span class="db-dot"></span><span id="dbStatusTxt">Connecting…</span></span>
+    <button class="nav-btn nb-ghost" onclick="showView('home')" id="navContact">Contact Us</button>
+    <button class="nav-btn nb-solid" id="navAdmin" onclick="handleAdminNav()">Admin Panel</button>
+  </div>
+</nav>
+
+<!-- =================== HOME =================== -->
+<div id="view-home" class="view active">
+
+  <!-- Setup banner (shown when not configured) -->
+  <div class="setup-banner" id="setupBanner">
+    <div class="icon">⚙️</div>
+    <div>
+      <h3>Supabase Setup Required</h3>
+      <p>Enter your Supabase project URL and anon key below to connect the backend. You'll also need a table called <code>contact_submissions</code>. See the SQL setup instructions inside the config card.</p>
+    </div>
+  </div>
+
+  <!-- Supabase Config -->
+  <div class="config-card" id="configCard">
+    <h3>🔌 Connect Supabase Backend</h3>
+    <p>Paste your project credentials from <strong>supabase.com → Project Settings → API</strong>. Your data will be stored securely in your own Supabase database.</p>
+    <div class="config-row">
+      <div class="cfg-field">
+        <label>Supabase Project URL</label>
+        <input type="url" id="cfgUrl" placeholder="https://xxxx.supabase.co">
+        <div class="cfg-note">Found in Settings → API → Project URL</div>
+      </div>
+      <div class="cfg-field">
+        <label>Anon / Public Key</label>
+        <input type="text" id="cfgKey" placeholder="eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9…">
+        <div class="cfg-note">Settings → API → Project API Keys → anon public</div>
+      </div>
+    </div>
+    <details style="margin-top:.75rem">
+      <summary style="cursor:pointer;font-size:.82rem;color:var(--plum);font-weight:600">📋 SQL to create the table in Supabase (click to expand)</summary>
+      <pre style="background:#f8f8f8;border:1px solid var(--border);border-radius:8px;padding:1rem;margin-top:.75rem;font-size:.75rem;overflow-x:auto;line-height:1.6">CREATE TABLE contact_submissions (
+  id          uuid DEFAULT gen_random_uuid() PRIMARY KEY,
+  first_name  text NOT NULL,
+  last_name   text NOT NULL,
+  email       text NOT NULL,
+  phone       text,
+  city        text,
+  subject     text NOT NULL,
+  message     text NOT NULL,
+  interests   text[],
+  created_at  timestamptz DEFAULT now()
+);
+
+-- Enable Row Level Security
+ALTER TABLE contact_submissions ENABLE ROW LEVEL SECURITY;
+
+-- Allow anyone to INSERT (public form)
+CREATE POLICY "Allow public inserts"
+  ON contact_submissions FOR INSERT
+  WITH CHECK (true);
+
+-- Only authenticated users can SELECT (admin panel)
+CREATE POLICY "Allow auth select"
+  ON contact_submissions FOR SELECT
+  USING (auth.role() = 'authenticated');
+
+-- Only authenticated users can DELETE
+CREATE POLICY "Allow auth delete"
+  ON contact_submissions FOR DELETE
+  USING (auth.role() = 'authenticated');</pre>
+    </details>
+    <div style="display:flex;gap:10px;margin-top:1.1rem;flex-wrap:wrap">
+      <button class="nav-btn nb-solid" onclick="saveConfig()" style="border-radius:9px">Save & Connect</button>
+      <button class="nav-btn nb-ghost" onclick="testConnection()" style="border-radius:9px">Test Connection</button>
+      <button class="nav-btn nb-ghost" onclick="useDemoMode()" style="border-radius:9px;border-color:#ffe082;color:#f57f17">⚡ Demo Mode (localStorage)</button>
+    </div>
+  </div>
+
+  <div class="hero">
+    <div class="hero-badge">✦ Empowering Women in Tech</div>
+    <h1>She <em>Can</em>, She <em>Will</em>,<br>She <em>Does</em>.</h1>
+    <p>Join our community lifting women in technology. Share your story, ask questions, or tell us how we can support your journey.</p>
+  </div>
+
+  <div class="stats-strip" id="statsStrip">
+    <div class="stat"><span class="stat-num" id="sStat1">—</span><span class="stat-label">Messages Received</span></div>
+    <div class="stat"><span class="stat-num" id="sStat2">—</span><span class="stat-label">Today</span></div>
+    <div class="stat"><span class="stat-num" id="sStat3">—</span><span class="stat-label">Mentorship Requests</span></div>
+  </div>
+
+  <div class="form-card">
+    <div class="progress-wrap">
+      <div class="progress-top"><span>Form Progress</span><span id="pctTxt">0%</span></div>
+      <div class="pbar"><div class="pfill" id="pfill" style="width:0%"></div></div>
+    </div>
+
+    <form id="contactForm" novalidate autocomplete="on">
+      <div class="sec-title">Personal Information</div>
+      <div class="field-row">
+        <div class="field">
+          <label for="fName">First Name <span>*</span></label>
+          <input type="text" id="fName" placeholder="Priya" autocomplete="given-name" required>
+          <div class="hint info" id="h-fName"></div>
+        </div>
+        <div class="field">
+          <label for="lName">Last Name <span>*</span></label>
+          <input type="text" id="lName" placeholder="Sharma" autocomplete="family-name" required>
+          <div class="hint info" id="h-lName"></div>
+        </div>
+      </div>
+      <div class="field">
+        <label for="email">Email Address <span>*</span></label>
+        <input type="email" id="email" placeholder="you@example.com" autocomplete="email" required>
+        <div class="hint info" id="h-email"></div>
+      </div>
+      <div class="field-row">
+        <div class="field">
+          <label for="phone">Phone Number</label>
+          <input type="tel" id="phone" placeholder="+91 98765 43210" autocomplete="tel">
+          <div class="hint info" id="h-phone"></div>
+        </div>
+        <div class="field">
+          <label for="city">City / Location</label>
+          <input type="text" id="city" placeholder="Vijayawada, AP" autocomplete="address-level2">
+        </div>
+      </div>
+
+      <div class="sec-title" style="margin-top:1.4rem">Area of Interest <span style="color:var(--rose)">*</span></div>
+      <div class="field">
+        <div class="cb-group">
+          <label class="cb-item"><input type="checkbox" name="interest" value="Mentorship"><span class="lbl">🤝 Mentorship Programme</span></label>
+          <label class="cb-item"><input type="checkbox" name="interest" value="Scholarships"><span class="lbl">🎓 Scholarships & Grants</span></label>
+          <label class="cb-item"><input type="checkbox" name="interest" value="Workshops"><span class="lbl">💻 Workshops & Bootcamps</span></label>
+          <label class="cb-item"><input type="checkbox" name="interest" value="Networking"><span class="lbl">🌐 Community & Networking</span></label>
+          <label class="cb-item"><input type="checkbox" name="interest" value="Volunteering"><span class="lbl">💛 Volunteering / Giving Back</span></label>
+        </div>
+        <div class="hint info" id="h-interest"></div>
+      </div>
+
+      <div class="sec-title" style="margin-top:1.4rem">Your Message</div>
+      <div class="field">
+        <label for="subject">Subject <span>*</span></label>
+        <input type="text" id="subject" placeholder="How can She Can Foundation help you?" required>
+        <div class="hint info" id="h-subject"></div>
+      </div>
+      <div class="field">
+        <label for="message">Message <span>*</span></label>
+        <textarea id="message" rows="5" placeholder="Tell us about your background, goals, or how we can support your journey…" required minlength="30" maxlength="1000"></textarea>
+        <div class="char-ct" id="charCt">0 / 1000</div>
+        <div class="hint info" id="h-message"></div>
+      </div>
+
+      <button type="submit" class="submit-btn" id="subBtn">
+        <div class="spinner" id="spinner"></div>
+        <span id="btnTxt">Send My Message 💌</span>
+      </button>
+    </form>
+  </div>
+</div>
+
+<!-- =================== SUCCESS =================== -->
+<div id="view-success" class="view">
+  <div style="max-width:640px;margin:0 auto;padding:3rem 1.5rem">
+    <div class="form-card">
+      <div class="success-screen">
+        <div class="s-icon">✅</div>
+        <h2>Form Submitted Successfully!</h2>
+        <p>Thank you for reaching out to She Can Foundation.<br>We'll get back to you within <strong>2 business days</strong>.</p>
+        <div class="ref-box" id="refBox">REF #SCF-000000</div>
+        <br><br>
+        <button class="submit-btn" style="max-width:220px;margin:0 auto" onclick="goHome()">Submit Another →</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- =================== LOGIN =================== -->
+<div id="view-login" class="view">
+  <div class="login-wrap">
+    <div class="login-card">
+      <h2>🔐 Admin Login</h2>
+      <p class="sub">Access the She Can Foundation dashboard</p>
+      <div class="l-err" id="lErr">Invalid credentials. Please try again.</div>
+      <div class="field"><label>Email</label><input type="email" id="lEmail" placeholder="admin@shecan.org" autocomplete="username"></div>
+      <div class="field"><label>Password</label><input type="password" id="lPass" placeholder="••••••••" autocomplete="current-password"></div>
+      <button class="submit-btn" style="margin-top:1.1rem" onclick="doLogin()">Login to Dashboard</button>
+      <p style="text-align:center;margin-top:.9rem;font-size:.76rem;color:var(--text-muted)">Demo (localStorage mode): admin@shecan.org / shecan2025</p>
+    </div>
+  </div>
+</div>
+
+<!-- =================== ADMIN =================== -->
+<div id="view-admin" class="view">
+  <div class="admin-wrap">
+    <div class="admin-hdr">
+      <h2>📊 Submissions Dashboard</h2>
+      <div style="display:flex;gap:8px;flex-wrap:wrap">
+        <button class="nav-btn nb-ghost" onclick="refreshAdmin()">🔄 Refresh</button>
+        <button class="nav-btn nb-ghost" onclick="exportCSV()">⬇ Export CSV</button>
+        <button class="nav-btn nb-ghost" onclick="doLogout()" style="border-color:#ffcdd2;color:#c62828">← Logout</button>
+      </div>
+    </div>
+    <div class="a-stats">
+      <div class="a-stat"><span class="num" id="aT">—</span><span class="lbl">Total</span></div>
+      <div class="a-stat"><span class="num" id="aD">—</span><span class="lbl">Today</span></div>
+      <div class="a-stat"><span class="num" id="aM">—</span><span class="lbl">Mentorship</span></div>
+      <div class="a-stat"><span class="num" id="aW">—</span><span class="lbl">Workshops</span></div>
+    </div>
+    <div class="filters">
+      <button class="chip on" onclick="applyFilter(this,'all')">All</button>
+      <button class="chip" onclick="applyFilter(this,'Mentorship')">Mentorship</button>
+      <button class="chip" onclick="applyFilter(this,'Scholarships')">Scholarships</button>
+      <button class="chip" onclick="applyFilter(this,'Workshops')">Workshops</button>
+      <button class="chip" onclick="applyFilter(this,'Networking')">Networking</button>
+      <button class="chip" onclick="applyFilter(this,'Volunteering')">Volunteering</button>
+    </div>
+    <div id="tblWrap"></div>
+  </div>
+</div>
+
+<!-- MODAL -->
+<div class="moverlay" id="moverlay" onclick="closeMod(event)">
+  <div class="modal">
+    <div class="mhdr"><span class="mtitle" id="mtitle">Submission Details</span><button class="mclose" onclick="closeMod()">✕</button></div>
+    <div id="mbody"></div>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+// ============================================================
+// CONFIG & STATE
+// ============================================================
+let SB_URL = '', SB_KEY = '', SB_TOKEN = '';
+let demoMode = false;
+let isLoggedIn = false;
+let submissions = [];
+let activeFilter = 'all';
+
+const DEMO_KEY = 'scf_demo_subs';
+const CFG_KEY  = 'scf_config';
+
+// Load saved config
+(function(){
+  try {
+    const c = JSON.parse(localStorage.getItem(CFG_KEY)||'{}');
+    if (c.url && c.key) { SB_URL=c.url; SB_KEY=c.key; document.getElementById('cfgUrl').value=SB_URL; document.getElementById('cfgKey').value=SB_KEY; }
+    if (c.demo) { demoMode=true; }
+    if (c.token) { SB_TOKEN=c.token; isLoggedIn=true; }
+  } catch {}
+})();
+
+// ============================================================
+// TOAST
+// ============================================================
+function toast(msg, dur=3000) {
+  const t=document.getElementById('toast'); t.textContent=msg; t.classList.add('show');
+  setTimeout(()=>t.classList.remove('show'), dur);
+}
+
+// ============================================================
+// DB STATUS
+// ============================================================
+function setDbStatus(state, txt) {
+  const b=document.getElementById('dbStatusBadge'), t=document.getElementById('dbStatusTxt');
+  b.className='db-status '+(state==='ok'?'db-ok':state==='err'?'db-err':'db-wait');
+  t.textContent=txt;
+}
+
+// ============================================================
+// SUPABASE HELPERS
+// ============================================================
+async function sbFetch(path, opts={}) {
+  const headers = { 'apikey': SB_KEY, 'Content-Type': 'application/json', ...opts.headers||{} };
+  if (SB_TOKEN) headers['Authorization'] = 'Bearer '+SB_TOKEN;
+  else headers['Authorization'] = 'Bearer '+SB_KEY;
+  const res = await fetch(SB_URL+'/rest/v1/'+path, { ...opts, headers });
+  const text = await res.text();
+  let data;
+  try { data = JSON.parse(text); } catch { data = text; }
+  if (!res.ok) throw new Error((data?.message||data?.error||JSON.stringify(data)||'Request failed'));
+  return data;
+}
+
+async function insertRow(row) {
+  return sbFetch('contact_submissions', { method:'POST', body:JSON.stringify(row), headers:{ 'Prefer':'return=representation' } });
+}
+
+async function fetchRows(filter) {
+  let q = 'contact_submissions?order=created_at.desc&limit=200';
+  if (filter && filter!=='all') q += `&interests=cs.{${filter}}`;
+  return sbFetch(q);
+}
+
+async function deleteRow(id) {
+  return sbFetch('contact_submissions?id=eq.'+id, { method:'DELETE' });
+}
+
+async function countRows() {
+  const res = await fetch(SB_URL+'/rest/v1/contact_submissions?select=id,interests,created_at', {
+    headers:{ 'apikey':SB_KEY, 'Authorization':'Bearer '+SB_KEY, 'Prefer':'count=exact' }
+  });
+  const data = await res.json();
+  return Array.isArray(data) ? data : [];
+}
+
+// Supabase Auth
+async function sbLogin(email, password) {
+  const res = await fetch(SB_URL+'/auth/v1/token?grant_type=password', {
+    method:'POST', headers:{ 'apikey':SB_KEY, 'Content-Type':'application/json' },
+    body: JSON.stringify({email, password})
+  });
+  const data = await res.json();
+  if (!res.ok) throw new Error(data.error_description||data.msg||'Login failed');
+  return data.access_token;
+}
+
+// ============================================================
+// CONFIG
+// ============================================================
+async function saveConfig() {
+  const url = document.getElementById('cfgUrl').value.trim().replace(/\/$/,'');
+  const key = document.getElementById('cfgKey').value.trim();
+  if (!url || !key) { toast('⚠ Enter both URL and API key'); return; }
+  SB_URL=url; SB_KEY=key; demoMode=false;
+  localStorage.setItem(CFG_KEY, JSON.stringify({url,key}));
+  await testConnection();
+}
+
+async function testConnection() {
+  setDbStatus('wait','Testing…');
+  try {
+    const res = await fetch(SB_URL+'/rest/v1/contact_submissions?limit=1', {
+      headers:{ 'apikey':SB_KEY, 'Authorization':'Bearer '+SB_KEY }
+    });
+    if (res.status===200||res.status===206) {
+      setDbStatus('ok','Supabase ✓');
+      document.getElementById('setupBanner').classList.add('hidden');
+      document.getElementById('configCard').style.display='none';
+      toast('✅ Supabase connected successfully!'); loadStats();
+    } else if (res.status===401||res.status===403) {
+      setDbStatus('err','Auth error');
+      toast('⚠ Connected but access denied. Check RLS policies.');
+    } else {
+      throw new Error('HTTP '+res.status);
+    }
+  } catch(e) {
+    setDbStatus('err','Connection failed');
+    toast('❌ Could not connect: '+e.message);
+  }
+}
+
+function useDemoMode() {
+  demoMode=true; SB_URL=''; SB_KEY='';
+  localStorage.setItem(CFG_KEY, JSON.stringify({demo:true}));
+  setDbStatus('ok','Demo Mode');
+  document.getElementById('setupBanner').classList.add('hidden');
+  document.getElementById('configCard').style.display='none';
+  toast('⚡ Demo mode — data saved locally in your browser');
+  loadStats();
+}
+
+// ============================================================
+// VIEWS
+// ============================================================
+function showView(name) {
+  document.querySelectorAll('.view').forEach(v=>v.classList.remove('active'));
+  document.getElementById('view-'+name).classList.add('active');
+  document.getElementById('navContact').className='nav-btn '+(name==='home'?'nb-active':'nb-ghost');
+  document.getElementById('navAdmin').className='nav-btn '+(name==='admin'?'nb-active':'nb-solid');
+  if (name==='admin') renderAdmin();
+  if (name==='home') loadStats();
+}
+function handleAdminNav() {
+  if (isLoggedIn) showView('admin'); else showView('login');
+}
+function goHome() {
+  resetForm(); showView('home');
+}
+
+// ============================================================
+// AUTH
+// ============================================================
+document.getElementById('lPass').addEventListener('keydown', e=>{ if(e.key==='Enter') doLogin(); });
+
+async function doLogin() {
+  const email=document.getElementById('lEmail').value.trim();
+  const pass=document.getElementById('lPass').value.trim();
+  document.getElementById('lErr').style.display='none';
+
+  if (demoMode) {
+    if (email==='admin@shecan.org' && pass==='shecan2025') {
+      isLoggedIn=true; showView('admin');
+    } else {
+      document.getElementById('lErr').style.display='block';
+    }
+    return;
+  }
+
+  try {
+    const token = await sbLogin(email, pass);
+    SB_TOKEN = token; isLoggedIn=true;
+    const cfg = JSON.parse(localStorage.getItem(CFG_KEY)||'{}');
+    cfg.token=token; localStorage.setItem(CFG_KEY, JSON.stringify(cfg));
+    showView('admin');
+  } catch(e) {
+    document.getElementById('lErr').textContent = e.message;
+    document.getElementById('lErr').style.display='block';
+  }
+}
+
+function doLogout() {
+  isLoggedIn=false; SB_TOKEN='';
+  const cfg=JSON.parse(localStorage.getItem(CFG_KEY)||'{}');
+  delete cfg.token; localStorage.setItem(CFG_KEY, JSON.stringify(cfg));
+  showView('home'); toast('Logged out');
+}
+
+// ============================================================
+// VALIDATION
+// ============================================================
+const rules = {
+  fName: v=>v.length>=2?{ok:1,m:'✓ Looks good!'}:{ok:0,m:'⚠ At least 2 characters'},
+  lName: v=>v.length>=2?{ok:1,m:'✓ Looks good!'}:{ok:0,m:'⚠ At least 2 characters'},
+  email: v=>/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v)?{ok:1,m:'✓ Valid email'}:{ok:0,m:'⚠ Enter a valid email'},
+  phone: v=>(!v||v.replace(/\D/g,'').length>=7)?{ok:1,m:v?'✓ Valid phone':'Optional field'}:{ok:0,m:'⚠ Invalid phone number'},
+  subject: v=>v.length>=5?{ok:1,m:'✓ Great subject!'}:{ok:0,m:'⚠ Subject too short'},
+  message: v=>v.length<30?{ok:0,m:'⚠ At least 30 characters please'}:v.length>1000?{ok:0,m:'⚠ Too long (max 1000)'}:{ok:1,m:'✓ Message looks great'}
+};
+
+function validateField(id) {
+  const el=document.getElementById(id), hint=document.getElementById('h-'+id);
+  if(!el||!hint||!rules[id]) return true;
+  const r=rules[id](el.value.trim());
+  hint.textContent=r.m; hint.className='hint '+(r.ok?'ok':'err');
+  if(el.value.trim()) el.className=r.ok?'v-ok':'v-err'; else el.className='';
+  return !!r.ok;
+}
+
+['fName','lName','email','phone','subject','message'].forEach(id=>{
+  const el=document.getElementById(id);
+  if(el){ el.addEventListener('input',()=>{ validateField(id); updateProgress(); }); el.addEventListener('blur',()=>validateField(id)); }
+});
+
+document.getElementById('message').addEventListener('input',function(){
+  const l=this.value.length, cc=document.getElementById('charCt');
+  cc.textContent=l+' / 1000';
+  cc.className='char-ct'+(l>900?' warn':'')+(l>1000?' over':'');
+});
+
+document.querySelectorAll('input[name="interest"]').forEach(cb=>{
+  cb.addEventListener('change',()=>{ updateProgress(); validateInterests(); });
+});
+
+function validateInterests() {
+  const n=document.querySelectorAll('input[name="interest"]:checked').length;
+  const h=document.getElementById('h-interest');
+  if(n>0){h.textContent='✓ '+n+' selected';h.className='hint ok';}
+  else{h.textContent='';h.className='hint info';}
+  return n>0;
+}
+
+function updateProgress() {
+  let f=0,t=6;
+  ['fName','lName','email','subject','message'].forEach(id=>{if(document.getElementById(id)?.value.trim())f++;});
+  if(document.querySelectorAll('input[name="interest"]:checked').length>0)f++;
+  const p=Math.round(f/t*100);
+  document.getElementById('pfill').style.width=p+'%';
+  document.getElementById('pctTxt').textContent=p+'%';
+}
+
+// ============================================================
+// FORM SUBMIT
+// ============================================================
+document.getElementById('contactForm').addEventListener('submit', async function(e){
+  e.preventDefault();
+  const fields=['fName','lName','email','subject','message'];
+  let valid=fields.map(validateField).every(Boolean);
+  if(!validateInterests()) valid=false;
+  if(!valid){toast('⚠ Please fix the errors above');return;}
+
+  const btn=document.getElementById('subBtn'), sp=document.getElementById('spinner'), bt=document.getElementById('btnTxt');
+  btn.disabled=true; sp.style.display='block'; bt.textContent='Submitting…';
+
+  const interests=[...document.querySelectorAll('input[name="interest"]:checked')].map(c=>c.value);
+  const row={
+    first_name: document.getElementById('fName').value.trim(),
+    last_name:  document.getElementById('lName').value.trim(),
+    email:      document.getElementById('email').value.trim(),
+    phone:      document.getElementById('phone').value.trim()||null,
+    city:       document.getElementById('city').value.trim()||null,
+    subject:    document.getElementById('subject').value.trim(),
+    message:    document.getElementById('message').value.trim(),
+    interests
+  };
+
+  try {
+    let ref;
+    if (demoMode) {
+      await new Promise(r=>setTimeout(r,900));
+      ref='SCF-'+Date.now().toString().slice(-6);
+      const demos=JSON.parse(localStorage.getItem(DEMO_KEY)||'[]');
+      demos.unshift({id:ref,...row,created_at:new Date().toISOString()});
+      localStorage.setItem(DEMO_KEY, JSON.stringify(demos));
+    } else {
+      const result=await insertRow(row);
+      ref='SCF-'+(result?.[0]?.id||Date.now()).toString().slice(-8).toUpperCase();
+    }
+    document.getElementById('refBox').textContent='REF #'+ref;
+    showView('success'); loadStats();
+  } catch(err) {
+    toast('❌ Submit failed: '+err.message);
+    console.error(err);
+  } finally {
+    btn.disabled=false; sp.style.display='none'; bt.textContent='Send My Message 💌';
+  }
+});
+
+function resetForm() {
+  document.getElementById('contactForm').reset();
+  ['fName','lName','email','phone','subject','message'].forEach(id=>{
+    const el=document.getElementById(id); if(el) el.className='';
+    const h=document.getElementById('h-'+id); if(h){h.textContent='';h.className='hint info';}
+  });
+  document.getElementById('h-interest').textContent='';
+  document.getElementById('charCt').textContent='0 / 1000';
+  updateProgress();
+}
+
+// ============================================================
+// STATS
+// ============================================================
+async function loadStats() {
+  try {
+    let all;
+    if (demoMode) { all=JSON.parse(localStorage.getItem(DEMO_KEY)||'[]'); }
+    else { all=await countRows(); }
+    const today=new Date().toDateString();
+    const todayCt=all.filter(s=>new Date(s.created_at).toDateString()===today).length;
+    const mentorCt=all.filter(s=>(s.interests||[]).includes('Mentorship')).length;
+    document.getElementById('sStat1').textContent=all.length;
+    document.getElementById('sStat2').textContent=todayCt;
+    document.getElementById('sStat3').textContent=mentorCt;
+  } catch { /* stats not critical */ }
+}
+
+// ============================================================
+// ADMIN
+// ============================================================
+const pillColors={'Mentorship':'#fce4ec:#c2185b','Scholarships':'#e8f5e9:#2e7d32','Workshops':'#e3f2fd:#1565c0','Networking':'#ede7f6:#4a148c','Volunteering':'#fff9c4:#f57f17'};
+
+function applyFilter(el, f) {
+  document.querySelectorAll('.chip').forEach(c=>c.classList.remove('on'));
+  el.classList.add('on'); activeFilter=f; renderAdmin();
+}
+
+async function refreshAdmin() { await renderAdmin(); toast('Refreshed'); }
+
+async function renderAdmin() {
+  document.getElementById('tblWrap').innerHTML='<div class="empty">Loading…</div>';
+  try {
+    let all;
+    if (demoMode) { all=JSON.parse(localStorage.getItem(DEMO_KEY)||'[]'); }
+    else { all=await fetchRows(); }
+    submissions=all;
+    const today=new Date().toDateString();
+    document.getElementById('aT').textContent=all.length;
+    document.getElementById('aD').textContent=all.filter(s=>new Date(s.created_at).toDateString()===today).length;
+    document.getElementById('aM').textContent=all.filter(s=>(s.interests||[]).includes('Mentorship')).length;
+    document.getElementById('aW').textContent=all.filter(s=>(s.interests||[]).includes('Workshops')).length;
+
+    let filtered=activeFilter==='all'?all:all.filter(s=>(s.interests||[]).includes(activeFilter));
+    if(!filtered.length){document.getElementById('tblWrap').innerHTML='<div class="empty">📭 No submissions found.</div>';return;}
+
+    const rows=filtered.map(s=>{
+      const dt=new Date(s.created_at);
+      const ds=dt.toLocaleDateString('en-IN',{day:'2-digit',month:'short'});
+      const ts=dt.toLocaleTimeString('en-IN',{hour:'2-digit',minute:'2-digit'});
+      const pills=(s.interests||[]).map(i=>{const[bg,c]=(pillColors[i]||'#f5f5f5:#333').split(':');return`<span class="pill" style="background:${bg};color:${c}">${i}</span>`;}).join('');
+      const sid=s.id||s.ref||'';
+      return`<tr>
+        <td><strong>${esc(s.first_name)} ${esc(s.last_name)}</strong><br><span style="font-size:.75rem;color:var(--text-muted)">${esc(s.email)}</span></td>
+        <td class="hide-m">${esc((s.subject||'').substring(0,35))}${(s.subject||'').length>35?'…':''}</td>
+        <td class="hide-m">${pills}</td>
+        <td class="hide-m">${ds}<br><span style="font-size:.72rem;color:var(--text-muted)">${ts}</span></td>
+        <td><button class="ab ab-v" onclick="viewSub('${sid}')">View</button><button class="ab ab-d" onclick="delSub('${sid}')">Del</button></td>
+      </tr>`;
+    }).join('');
+
+    document.getElementById('tblWrap').innerHTML=`<table class="tbl"><thead><tr><th>Name</th><th class="hide-m">Subject</th><th class="hide-m">Interests</th><th class="hide-m">Date</th><th>Actions</th></tr></thead><tbody>${rows}</tbody></table>`;
+  } catch(err) {
+    document.getElementById('tblWrap').innerHTML=`<div class="empty">❌ Could not load data: ${esc(err.message)}</div>`;
+  }
+}
+
+function viewSub(id) {
+  const s=submissions.find(x=>(x.id||x.ref)===id); if(!s) return;
+  const pills=(s.interests||[]).map(i=>{const[bg,c]=(pillColors[i]||'#f5f5f5:#333').split(':');return`<span class="pill" style="background:${bg};color:${c};padding:3px 10px">${i}</span>`;}).join(' ');
+  document.getElementById('mtitle').textContent=s.first_name+' '+s.last_name;
+  document.getElementById('mbody').innerHTML=`
+    <div class="drow"><span class="dlbl">Email</span><span class="dval"><a href="mailto:${esc(s.email)}" style="color:var(--rose)">${esc(s.email)}</a></span></div>
+    ${s.phone?`<div class="drow"><span class="dlbl">Phone</span><span class="dval">${esc(s.phone)}</span></div>`:''}
+    ${s.city?`<div class="drow"><span class="dlbl">City</span><span class="dval">${esc(s.city)}</span></div>`:''}
+    <div class="drow"><span class="dlbl">Subject</span><span class="dval">${esc(s.subject)}</span></div>
+    <div class="drow"><span class="dlbl">Interests</span><span class="dval">${pills}</span></div>
+    <div class="drow"><span class="dlbl">Message</span><span class="dval">${esc(s.message).replace(/\n/g,'<br>')}</span></div>
+    <div class="drow"><span class="dlbl">Date</span><span class="dval">${new Date(s.created_at).toLocaleString('en-IN')}</span></div>`;
+  document.getElementById('moverlay').classList.add('open');
+}
+
+async function delSub(id) {
+  if(!confirm('Delete this submission?')) return;
+  try {
+    if(demoMode){const d=JSON.parse(localStorage.getItem(DEMO_KEY)||'[]');localStorage.setItem(DEMO_KEY,JSON.stringify(d.filter(x=>x.id!==id)));}
+    else{await deleteRow(id);}
+    toast('Deleted'); renderAdmin();
+  } catch(e){toast('❌ Delete failed: '+e.message);}
+}
+
+function closeMod(e){if(!e||e.target===document.getElementById('moverlay'))document.getElementById('moverlay').classList.remove('open');}
+
+function exportCSV() {
+  if(!submissions.length){toast('No data to export');return;}
+  const hdr=['ID','First Name','Last Name','Email','Phone','City','Subject','Interests','Message','Date'];
+  const rows=submissions.map(s=>[s.id,s.first_name,s.last_name,s.email,s.phone,s.city,s.subject,(s.interests||[]).join(';'),s.message,s.created_at].map(v=>'"'+String(v||'').replace(/"/g,'""')+'"').join(','));
+  const blob=new Blob([[hdr.join(','),...rows].join('\n')],{type:'text/csv'});
+  const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download='scf-submissions-'+new Date().toISOString().slice(0,10)+'.csv';a.click();
+  toast('✅ CSV exported!');
+}
+
+function esc(s){return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');}
+
+document.addEventListener('keydown',e=>{if(e.key==='Escape')document.getElementById('moverlay').classList.remove('open');});
+
+// Auto-init
+if(demoMode){setDbStatus('ok','Demo Mode');document.getElementById('setupBanner').classList.add('hidden');document.getElementById('configCard').style.display='none';loadStats();}
+else if(SB_URL&&SB_KEY){testConnection().then(()=>loadStats());}
+else{setDbStatus('err','Not connected');}
+if(isLoggedIn){document.getElementById('navAdmin').textContent='Dashboard';}
+</script>
+</body>
+</html>
