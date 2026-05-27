@@ -559,20 +559,16 @@ body {
 // ────────────────────────────────────────────────────────────────
 // SUPABASE CONFIG  (pre-fill from URL params for convenience)
 // ────────────────────────────────────────────────────────────────
-let SB_URL = '';
-let SB_KEY = '';
-let demoMode = true;
+let SB_URL = 'https://ofdoenuvynaqxdrpekyz.supabase.co';
+let SB_KEY = 'sb_publishable_MLaKfMRFEbQp_rYN5ppZLQ_RdJzqbvy';
+let demoMode = false;
 const DEMO_KEY = 'scf_demo_messages';
 
 // Try to restore from sessionStorage
 try {
-  SB_URL = sessionStorage.getItem('scf_sb_url') || '';
-  SB_KEY = sessionStorage.getItem('scf_sb_key') || '';
-  if (SB_URL && SB_KEY) {
-    document.getElementById('cfgUrl').value = SB_URL;
-    document.getElementById('cfgKey').value = SB_KEY;
-    connectSupabase();
-  }
+  document.getElementById('cfgUrl').value = SB_URL;
+  document.getElementById('cfgKey').value = SB_KEY;
+  connectSupabase();
 } catch(e) {}
 
 // ────────────────────────────────────────────────────────────────
